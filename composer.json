@@ -1,0 +1,11 @@
+{
+    "name": "alex/slimproject",
+    "description": "Projet PHP utilisant le Microframework Slim 3",
+    "authors": [
+        {
+            "name": "Alex Simisi",
+            "email": "simisinta.officiel@gmail.com"
+        }
+    ],
+    "require": {}
+}
