@@ -1,14 +1,17 @@
 <?php
 // Récupération de l'autoloader créé par composer
-require '../vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 // Les "use" des différentes classes
-
 use Slim\App;
-// On crée l'application Slim
-$app = new App();
+// Config
+$config = require dirname(__DIR__) . '/config/config.php';
+// On créé l'application Slim
+$app = new App($config);
 
-$app->get('/', function (Slim\Http\Request $request, Slim\Http\Response $response) {
-    return $response->getBody()->write('<h1>Bonjour mon ami</h1>');
-});
+// recuperation du conteneur
+$config = require dirname(__DIR__) . '/config/container.php';
 
+// recuperation de la route
+require dirname(__DIR__) . '/config/routes.php';
+// Renvoi de la réponse au navigateur
 $app->run();

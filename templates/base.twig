@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="ie=edge" http-equiv="X-UA-Compatible">
+        {% block stylesheets %}
+            <link href="https://bootswatch.com/4/flatly/bootstrap.min.css" rel="stylesheet">
+        {% endblock %}
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        {% block navbar %}
+            {% include 'inc/navbar.twig' %}
+        {% endblock %}
+        <main class="container">
+            {% block body %}{% endblock %}
+        </main>
+        {% block footer %}{% endblock %}
+
+        {% block javascript %}
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+        {% endblock %}
+
+    </body>
+</html>

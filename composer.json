@@ -1,13 +1,19 @@
 {
-    "name": "alex/slimproject",
-    "description": "Projet PHP utilisant le Microframework Slim 3",
-    "authors": [
-        {
-            "name": "Alex Simisi",
-            "email": "simisinta.officiel@gmail.com"
-        }
-    ],
-    "require": {
-        "slim/slim": "^3.12"
+  "name": "alex/slimproject",
+  "description": "Projet PHP utilisant le Microframework Slim 3",
+  "authors": [
+    {
+      "name": "Alex Simisi",
+      "email": "simisinta.officiel@gmail.com"
     }
+  ],
+  "require": {
+    "slim/slim": "^3.12",
+    "slim/twig-view": "^2.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
 }
