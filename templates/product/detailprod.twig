@@ -3,6 +3,20 @@
 {% block title %}Detail du produit{% endblock %}
 
 {% block body %}
-    <h1>Detail du produit</h1>
+    <h1 class="mt-2">Detail du produit</h1>
+        <section class="row">
+            {% for products in product %}
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="/img/uploads/{{ products.imageName }}" class="d-block w-1000 img-fluid"
+                         alt="Image de {{ products.name }}">
+                         <h3 class="card-title">{{ products.name }}</h3>
+                         <p class="card-text">{{ products.getShortDescription() }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
 
 {% endblock %}
