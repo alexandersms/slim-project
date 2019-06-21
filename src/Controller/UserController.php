@@ -1,26 +1,26 @@
 <?php
 namespace App\Controller;
 
-use App\Entity\Produit;
-use App\Repository\ProductRepository;
+use App\Entity\User;
+use Slim\Views\Twig;
+use App\Repository\UserRepository;
 use App\Utilities\AbstractController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Views\Twig;
 
-class ProductController extends AbstractController
+class UserController extends AbstractController
 {
-    /**
-     * @var ProductRepository
+     /**
+     * @var UserRepository
      */
-    private $productRepository;
-    public function __construct(Twig $twig, ProductRepository $productRepository)
+    private $userRepository;
+    public function __construct(Twig $twig, UserRepository $userRepository)
     {
         parent::__construct($twig);
-        $this->productRepository = $productRepository;
+        $this->userRepository = $userRepository;
     }
     /**
-     * Page de la liste des produits
+     * Page de la liste des utilisateur
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      * @param array $args
@@ -28,14 +28,14 @@ class ProductController extends AbstractController
      */
     public function liste(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        $products = $this->productRepository->findAll();
+        $users = $this->userRepository->findAll();
         // On renvoie les produits à la vue
-        return $this->twig->render($response, 'product/listprod.twig', [
-            'products' => $products
+        return $this->twig->render($response, 'users/list.twig', [
+            'users' => $users
         ]);
     }
     /**
-     * Affichage du détail du produit
+     * Affichage du détail de l'utilisateur
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      * @param array $args
@@ -43,19 +43,17 @@ class ProductController extends AbstractController
      */
     public function show(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
+        $id = $args['id'];
         // Requête SQL
-        $product = $this->productRepository->findBy([
-            'id' => $args['id']
-        ]);
+        $query = "SELECT * FROM app_user WHERE id = ?";
+        $user = $this->database->queryPrepared($query, [$id], User::class);
         // On teste si un produit a été retourné
-        if (empty($product)) {
+        if (empty($user)) {
             // Page d'erreur 404
             return $this->twig
                 ->render($response, 'errors/error404.twig')
                 ->withStatus(404);
         }
-        return $this->twig->render($response, 'product/detailprod.twig', [
-            'product' => $product[0]
-        ]);
+        return $this->twig->render($response, 'users/list.twig');
     }
 }

@@ -8,14 +8,19 @@
             <link href="https://bootswatch.com/4/flatly/bootstrap.min.css" rel="stylesheet">
         {% endblock %}
         <title>{% block title %}{% endblock %}</title>
+
     </head>
+    
     <body>
         {% block navbar %}
             {% include 'inc/navbar.twig' %}
         {% endblock %}
         <main class="container">
-            {% block body %}{% endblock %}
+            {% block body %}
+               
+            {% endblock %}
         </main>
+        
         {% block footer %}{% endblock %}
 
         {% block javascript %}

@@ -1,24 +1,34 @@
 {% extends 'base.twig' %}
 
-{% block title %}Page d'inscription{% endblock %}
+{% block title %}Page d'inscription
+{% endblock %}
 
 {% block body %}
-    <h1>Inscription</h1>
-            <form>
-                <fieldset>  
-                    <div class="form-group">
-                        <input type="email" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter name">
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" id="password" placeholder="Confirm password">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
-                </fieldset>
-            </form>
+<h1>Inscription</h1>
+<form method="post">
+    <fieldset>
+        <div class="form-group">
+            {{ formValidator.generateInputText('username', 'text','Nom d\'utilisateur') | raw('html')}}
+        </div>
+        
+        <div class="form-group">
+            {{ formValidator.generateInputText('email', 'email','Adresse email') | raw('html')}}
+        </div>
+
+        <div class="form-group">
+            {{formValidator.generateInputText('password', 'password','Mot de passe') | raw('html')}}
+
+        </div>
+
+        <div class="form-group">
+            {{formValidator.generateInputText('password-confirm', 'password','Vérification mot de passe') | raw('html')}}
+        </div>
+            <div class="form-group">
+                <label for="role">Veux-tu être un admin ?</label>
+                <input class="form-control" id="role" name="role" type="checkbox" value="">
+                <div class="invalid-feedback"></div>
+            </div>
+            <button class="btn btn-primary" type="submit">Enregistrer</button>
+        </fieldset>
+    </form>
 {% endblock %}

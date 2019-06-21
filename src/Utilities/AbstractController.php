@@ -5,13 +5,17 @@ use Slim\Views\Twig;
 
 class AbstractController
 {
-
+    /**
+     * @var Twig
+     */
     protected $twig;
-    protected $database;
-
-    public function __construct(Twig $twig, Database $database)
+    /**
+     * On demande la classe TWIG qui va nous permettre "d'appeler"
+     * les vues TWIG du dossier "/templates"
+     * @param Twig $twig
+     */
+    public function __construct(Twig $twig)
     {
         $this->twig = $twig;
-        $this->database = $database;
     }
 }

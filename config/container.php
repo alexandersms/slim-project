@@ -1,9 +1,11 @@
 <?php
+use App\Utilities\Database;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\CallableResolver;
 use Slim\Handlers\Error;
 use Slim\Handlers\NotAllowed;
-use Slim\Handlers\NotFound;
 use Slim\Handlers\PhpError;
 use Slim\Handlers\Strategies\RequestResponse;
 use Slim\Http\Environment;
@@ -15,7 +17,6 @@ use Slim\Router;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use Twig\Extension\DebugExtension;
-use App\Utilities\Database;
 
 return [
     'settings' => [
@@ -60,8 +61,12 @@ return [
             $container->get('settings')['displayErrorDetails']
         );
     },
-    'notFoundHandler' => function () {
-        return new NotFound;
+    'notFoundHandler' => function (ContainerInterface $container) {
+        return function (ServerRequestInterface $request, ResponseInterface $response) use ($container) {
+            return $container->get(Twig::class)
+                ->render($response, 'errors/error404.twig')
+                ->withStatus(404);
+        };
     },
     'notAllowedHandler' => function () {
         return new NotAllowed;
@@ -84,13 +89,12 @@ return [
         $view->addExtension(new TwigExtension($router, $uri));
         $view->addExtension(new DebugExtension());
         // Ajout de variables globales
-        //$view->getEnvironment()->addGlobal('session', $_SESSION);
+        $view->getEnvironment()->addGlobal('session', $_SESSION);
         return $view;
     },
     Twig::class => function (ContainerInterface $container) {
         return $container->get('view');
     },
-
     Database::class => function (ContainerInterface $container) {
         $parameters = $container->get('parameters');
         return new Database(

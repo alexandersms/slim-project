@@ -1,0 +1,26 @@
+{% extends 'base.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+
+    <h1>Liste des utilisateurs</h1>
+        <section class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr class="table-dark">
+                        <th scope="col">Nom d'utilisateur</th>
+                        <th scope="col">Mail</th>
+                    </tr>
+                </thead>
+            <tbody>
+                {% for user in users %}
+                 <tr class="table-success">
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </section>
+{% endblock %}

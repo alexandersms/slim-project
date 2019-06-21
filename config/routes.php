@@ -1,8 +1,10 @@
 <?php
-use App\Controller\ProductController;
-use App\Controller\HomeController;
+
 use App\Controller\APIController;
 use App\Controller\AuthController;
+use App\Controller\HomeController;
+use App\Controller\UserController;
+use App\Controller\ProductController;
 
 // Création d'une route
 $app->get('/', HomeController::class . ':home');
@@ -22,5 +24,8 @@ $app->group('/produit', function () {
 });
 
 //Page d'connexion
-$app->get('/inscription', AuthController::class . ':register');
+$app->map(['GET', 'POST'], '/inscription', AuthController::class . ':register');
 $app->get('/connexion', AuthController::class . ':connexion');
+
+//Page utilisateur
+$app->get('/utilisateur', UserController::class . ':liste');

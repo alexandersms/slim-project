@@ -1,6 +1,7 @@
 <?php
 // Récupération de l'autoloader créé par composer
 require dirname(__DIR__) . '/vendor/autoload.php';
+session_start();
 // Les "use" des différentes classes
 use DI\ContainerBuilder;
 use Slim\App;

@@ -1,20 +1,55 @@
 <?php
 namespace App\Controller;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Utilities\AbstractController;
+use App\Utilities\FormValidator;
+use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Request;
+use Slim\Views\Twig;
 
 class AuthController extends AbstractController
 {
-
-    function register(ServerRequestInterface $request, ResponseInterface $response)
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+    public function __construct(Twig $twig, UserRepository $userRepository)
     {
-        return $this->twig->render($response, 'auth/register.twig');
+        parent::__construct($twig);
+        $this->userRepository = $userRepository;
     }
-
-    function connexion(ServerRequestInterface $request, ResponseInterface $response)
+    public function register(Request $request, ResponseInterface $response)
     {
-        return $this->twig->render($response, 'auth/connexion.twig');
+        $formValidator = new FormValidator();
+        if ($request->isMethod('POST')) {
+            // Validation des champs
+            $formValidator->validate([
+                ['username', 'text', 128],
+                ['email', 'text', 255],
+                ['password', 'text', 128],
+                ['password-confirm', 'text', 128],
+            ]);
+            // Vérification des mots de passe
+            $formValidator->checkEquals('password', 'password-confirm');
+            // On vérifie s'il n'y a pas d'erreur
+            if (!$formValidator->isError()) {
+                $user = new User(
+                    $_POST['username'],
+                    $_POST['email'],
+                    $_POST['password'],
+                    isset($_POST['role']) ? 'admin' : 'user'
+                );
+                $this->userRepository->insert($user);
+            }
+        }
+        return $this->twig->render($response, 'auth/register.twig', [
+            'formValidator' => $formValidator
+        ]);
+    }
+    public function connect(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        return $this->twig->render($response, 'auth/connect.twig');
     }
 }

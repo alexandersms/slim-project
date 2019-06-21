@@ -1,22 +1,21 @@
 {% extends 'base.twig' %}
 
-{% block title %}Detail du produit{% endblock %}
+{% block title %}Detail du produit
+{% endblock %}
 
 {% block body %}
-    <h1 class="mt-2">Detail du produit</h1>
-        <section class="row">
-            {% for products in product %}
-            <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="/img/uploads/{{ products.imageName }}" class="d-block w-1000 img-fluid"
-                         alt="Image de {{ products.name }}">
-                         <h3 class="card-title">{{ products.name }}</h3>
-                         <p class="card-text">{{ products.getShortDescription() }}</p>
-                    </div>
+    <h2 class="mt-2">Detail du produit :
+        {{ product.name }}</h2>
+    <section class="row">
+        <div class="carousel slide" data-ride="carousel" id="carouselExampleSlidesOnly">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img alt="Image de {{ product.name }}" class="d-block w-1000 img-fluid" src="/img/uploads/{{ product.imageName }}">
+                    <h3 class="card-title">{{ product.name }}</h3>
+                    <p class="card-text">{{ product.getShortDescription() }}</p>
                 </div>
             </div>
-            {% endfor %}
-        </section>
+        </div>
+    </section>
 
 {% endblock %}

@@ -10,18 +10,29 @@ class Database
 {
     /**
      * Instance de PDO
-     * @var \PDO
+     * @var PDO
      */
     private $pdo;
     /**
      * On crée un constructeur pour initialiser PDO automatiquement
+     * @param string $dbName
+     * @param string $dbUser
+     * @param string|null $dbPass
+     * @param string $dbHost
      */
     public function __construct(string $dbName, string $dbUser, string $dbHost, ?string $dbPass = null)
     {
-        $this->connect($dbName,  $dbUser,  $dbHost, $dbPass);
+        // Connexion à la BDD
+        $this->connect($dbName, $dbUser, $dbHost, $dbPass);
     }
     /**
-     * Créer une instance de PDO
+     * Créer une instance de PDO et la stocke dans la classe
+     * @param string $dbName
+     * @param string $dbUser
+     * @param string $dbPass
+     * @param string $dbHost
+     *
+     *
      */
     public function connect(string $dbName, string $dbUser, string $dbHost, ?string $dbPass = null): void
     {
@@ -48,25 +59,26 @@ class Database
         // Récupération des résultats
         return $result->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $className);
     }
-
     /**
-     * Undocumented function
-     *
-     * @param string $sql
-     * @param array $params
-     * @param string|null $className
-     * @return array|null
+     * Prépare et exécute une requête préparée (protection contre les injections SQL)
+     * @param string $sql - Requête SQL
+     * @param array $params - Paramètres de la requête SQL
+     * @param string|null $className - La classe servant à stocker les résultats
+     * @return array|bool|\PDOStatement
      */
-    public function queryPrepared(string $sql, array $params, ?string $className = null): ?array
+    public function queryPrepared(string $sql, array $params, ?string $className = null)
     {
-        // Preparation de la requete SQL
+        // Préparation de la requête SQL
         $statement = $this->pdo->prepare($sql);
         // Exécution de la requête SQL
         $statement->execute($params);
-        // Retour des resultats
-        return $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $className);
+        // Retour des résultats
+        if ($className) {
+            return $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $className);
+        } else {
+            return $statement;
+        }
     }
-
     /**
      * Execute une requête SQL pour :
      * - La création (INSERT INTO)
